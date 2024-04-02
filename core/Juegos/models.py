@@ -6,13 +6,22 @@ from cloudinary import models as cloudinary_models
 class Plataformas(models.Model):
     nombre = models.CharField(max_length=100)
 
+    def __str__(self) -> str:
+        return self.nombre
+
 
 class Desarrolladoras(models.Model):
     nombre = models.CharField(max_length=100)
 
+    def __str__(self) -> str:
+        return self.nombre
+
 
 class Generos(models.Model):
     nombre = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.nombre
 
 
 class Juegos(models.Model):
@@ -29,6 +38,9 @@ class Juegos(models.Model):
     desarrolladora = models.ManyToManyField(Desarrolladoras, blank=True)
     plataformas = models.ManyToManyField(Plataformas, blank=True)
     generos = models.ManyToManyField(Generos, blank=True)
+
+    def __str__(self) -> str:
+        return self.titulo
 
 
 class ImagenesJuegos(models.Model):
