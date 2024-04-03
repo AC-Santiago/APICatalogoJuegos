@@ -51,7 +51,8 @@ class JuegosViewSet(viewsets.ModelViewSet):
         # Crear el juego
         juego_serializer = JuegosSerializer(data=data)
         juego_serializer.is_valid(raise_exception=True)
-        juego = juego_serializer.save()
+        juego_serializer.save()
+        return Response(juego_serializer.data)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
