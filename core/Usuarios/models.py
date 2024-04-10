@@ -13,5 +13,8 @@ class UsuarioCatalogo(AbstractUser):
         folder="/CatalogoJuegos/Usuarios/",
     )
 
+    class Meta:
+        db_table = "UsuarioCatalogo"
+
     def __str__(self) -> str:
         return self.username
