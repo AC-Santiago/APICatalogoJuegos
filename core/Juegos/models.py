@@ -44,9 +44,21 @@ class Juegos(models.Model):
     menciones_listas = models.IntegerField()
     listas_de_deseos = models.IntegerField()
     reseñas = models.IntegerField()
-    desarrolladora = models.ManyToManyField(Desarrolladoras, blank=True)
-    plataformas = models.ManyToManyField(Plataformas, blank=True)
-    generos = models.ManyToManyField(Generos, blank=True)
+    desarrolladora = models.ManyToManyField(
+        Desarrolladoras,
+        blank=True,
+        related_name="juegos_desarrolladora",
+        through="JuegosXDesarrolladora",
+    )
+    plataformas = models.ManyToManyField(
+        Plataformas,
+        blank=True,
+        related_name="juegos_plataformas",
+        through="JuegosXPlataforma",
+    )
+    generos = models.ManyToManyField(
+        Generos, blank=True, related_name="juegos_generos", through="JuegosXGenero"
+    )
 
     class Meta:
         db_table = "Juegos"
