@@ -33,6 +33,30 @@ class Generos(models.Model):
         return self.nombre
 
 
+class JuegosXDesarrolladora(models.Model):
+    juego = models.ForeignKey("Juegos", on_delete=models.CASCADE)
+    desarrolladora = models.ForeignKey("Desarrolladoras", on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "JuegosXDesarrolladora"
+
+
+class JuegosXPlataforma(models.Model):
+    juego = models.ForeignKey("Juegos", on_delete=models.CASCADE)
+    plataforma = models.ForeignKey("Plataformas", on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "JuegosXPlataforma"
+
+
+class JuegosXGenero(models.Model):
+    juego = models.ForeignKey("Juegos", on_delete=models.CASCADE)
+    genero = models.ForeignKey("Generos", on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "JuegosXGenero"
+
+
 class Juegos(models.Model):
     titulo = models.CharField(max_length=50)
     fecha_Lanzamiento = models.DateField()
