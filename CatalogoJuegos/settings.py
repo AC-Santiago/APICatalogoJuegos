@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Aplicaciones de terceros
     "cloudinary",
     "rest_framework",
+    "rest_framework.authtoken",
     # Aplicaciones propias
     "core.Juegos",
     "core.Usuarios",
