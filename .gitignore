@@ -20,3 +20,5 @@ venv.bak/
 # IDE
 .idea/
 .vscode/
+
+backloggd_games.csv

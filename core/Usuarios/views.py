@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
+import cloudinary.uploader
+
 from django.shortcuts import get_object_or_404
 
 from .Api.serializers import UsuarioCatalogoSerializer
@@ -49,4 +51,14 @@ def profile(request):
 
 @api_view(["GET"])
 def logout(request):
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(["DELETE"])
+def delete_account(request, id_usuario):
+    usuaio_delete = get_object_or_404(UsuarioCatalogo, id=id_usuario)
+    image_profile = usuaio_delete.image_profile
+    if image_profile:
+        cloudinary.uploader.destroy(image_profile.public_id)
+    usuaio_delete.delete()
     return Response(status=status.HTTP_200_OK)

@@ -14,7 +14,7 @@ class Plataformas(models.Model):
 
 
 class Desarrolladoras(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=200)
 
     class Meta:
         db_table = "Desarrolladoras"
@@ -58,7 +58,7 @@ class JuegosXGenero(models.Model):
 
 
 class Juegos(models.Model):
-    titulo = models.CharField(max_length=50)
+    titulo = models.CharField(max_length=300)
     fecha_Lanzamiento = models.DateField()
     resumen = models.TextField()
     valoracion = models.FloatField()
