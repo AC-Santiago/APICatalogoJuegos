@@ -59,7 +59,7 @@ class JuegosXGenero(models.Model):
 
 class Juegos(models.Model):
     titulo = models.CharField(max_length=300)
-    fecha_Lanzamiento = models.DateField()
+    fecha_Lanzamiento = models.DateField(blank=True, null=True)
     resumen = models.TextField()
     valoracion = models.FloatField()
     numero_Partidas = models.IntegerField()
