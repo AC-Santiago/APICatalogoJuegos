@@ -12,6 +12,7 @@ class UsuarioCatalogo(AbstractUser):
         blank=True,
         folder="/CatalogoJuegos/Usuarios/",
     )
+    is_moderator = models.BooleanField(default=False)
 
     class Meta:
         db_table = "UsuarioCatalogo"

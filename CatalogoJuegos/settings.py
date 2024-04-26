@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     # Aplicaciones de terceros
     "cloudinary",
     "rest_framework",
-    "rest_framework.authtoken",
+    "rest_framework_simplejwt",
     # Aplicaciones propias
     "core.Juegos",
     "core.Usuarios",
@@ -152,4 +152,15 @@ cloudinary.config(
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+}
+
+"""Configuracion de JWT(Jso Web Token)"""
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }

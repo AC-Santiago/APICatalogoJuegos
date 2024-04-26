@@ -15,33 +15,33 @@ from .Api.serializers import (
 
 # Create your views here.
 class GenerosViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Generos.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = GenerosSerializer
 
 
 class DesarrolladorasViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Desarrolladoras.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = DesarrolladorasSerializer
 
 
 class PlataformasViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Plataformas.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = PlataformasSerializer
 
 
 class ImagenesJuegosViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = ImagenesJuegos.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = ImagenesJuegosSerializer
     parser_classes = [parsers.MultiPartParser]
 
 
 class JuegosViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Juegos.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = JuegosSerializer
     parser_classes = [parsers.MultiPartParser]
 
