@@ -11,36 +11,37 @@ from .Api.serializers import (
     DesarrolladorasSerializer,
     GenerosSerializer,
 )
+from .permissions import IsModeratorOrReadOnly
 
 
 # Create your views here.
 class GenerosViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsModeratorOrReadOnly]
     queryset = Generos.objects.all()
     serializer_class = GenerosSerializer
 
 
 class DesarrolladorasViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsModeratorOrReadOnly]
     queryset = Desarrolladoras.objects.all()
     serializer_class = DesarrolladorasSerializer
 
 
 class PlataformasViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsModeratorOrReadOnly]
     queryset = Plataformas.objects.all()
     serializer_class = PlataformasSerializer
 
 
 class ImagenesJuegosViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsModeratorOrReadOnly]
     queryset = ImagenesJuegos.objects.all()
     serializer_class = ImagenesJuegosSerializer
     parser_classes = [parsers.MultiPartParser]
 
 
 class JuegosViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsModeratorOrReadOnly]
     queryset = Juegos.objects.all()
     serializer_class = JuegosSerializer
     parser_classes = [parsers.MultiPartParser]

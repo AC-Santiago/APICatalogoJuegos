@@ -43,5 +43,20 @@ class JuegosSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Juegos
-        fields = "__all__"
+        fields = [
+            "titulo",
+            "fecha_Lanzamiento",
+            "resumen",
+            "valoracion",
+            "numero_Partidas",
+            "numero_jugadores",
+            "comprado_no_jugado",
+            "menciones_listas",
+            "listas_de_deseos",
+            "reseñas",
+            "id",
+            "generos",
+            "plataformas",
+            "desarrolladora",
+        ]
         read_only_fields = ("id",)
