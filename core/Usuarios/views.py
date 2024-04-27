@@ -9,24 +9,28 @@ import cloudinary.uploader
 from django.shortcuts import get_object_or_404
 
 from .Api.serializers import UsuarioCatalogoSerializer
+from .Api.optimize_url import optimize_url
 from .models import UsuarioCatalogo
 from .permissions import IsOwnerOrModerator
 
 
 @api_view(["POST"])
 def register(request):
-    serializer = UsuarioCatalogoSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-
-        usuario = UsuarioCatalogo.objects.get(username=serializer.data["username"])
-        usuario.save()
-        token = RefreshToken.for_user(usuario)
-        return Response(
-            {"refresh": str(token), "access": str(token.access_token)},
-            status=status.HTTP_201_CREATED,
-        )
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        serializer = UsuarioCatalogoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            usuario = UsuarioCatalogo.objects.get(username=serializer.data["username"])
+            usuario.set_password(serializer.data["password"])
+            usuario.save()
+            token = RefreshToken.for_user(usuario)
+            return Response(
+                {"refresh": str(token), "access": str(token.access_token)},
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])
@@ -34,12 +38,18 @@ def register(request):
 def profile(request):
     usuario = get_object_or_404(UsuarioCatalogo, id=request.user.id)
     serializer = UsuarioCatalogoSerializer(usuario)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-@api_view(["POST"])
-def logout(request):
-    return Response(status=status.HTTP_200_OK)
+    imagen_usuario = usuario.image_profile.public_id
+    imagen = optimize_url(imagen_usuario)
+    return Response(
+        {
+            "Usuario": serializer.data["username"],
+            "Nombre": serializer.data["first_name"],
+            "Apellido": serializer.data["last_name"],
+            "Email": serializer.data["email"],
+            "Imagen": str(imagen),
+        },
+        status=status.HTTP_200_OK,
+    )
 
 
 @api_view(["DELETE"])
@@ -61,3 +71,55 @@ def delete_account(request, id_usuario):
         cloudinary.uploader.destroy(image_profile.public_id)
     usuaio_delete.delete()
     return Response(status=status.HTTP_200_OK)
+
+
+# -------------------Editar usuario-------------------#
+
+
+@api_view(["PATCH"])
+@permission_classes([IsAuthenticated])
+def edit_user(request):
+    try:
+        usuario = get_object_or_404(UsuarioCatalogo, id=request.user.id)
+        serializado = UsuarioCatalogoSerializer(
+            usuario, data=request.data, partial=True
+        )
+        if not serializado.is_valid():
+            return Response(serializado.errors, status=status.HTTP_400_BAD_REQUEST)
+        if "image_profile" in request.FILES:
+            image_profile_change(request, serializado, usuario.image_profile.public_id)
+        usuario.set_password(request.data["password"])
+        usuario.save()
+        return Response(
+            {
+                "Usuario": serializado.data["username"],
+                "Nombre": serializado.data["first_name"],
+                "Apellido": serializado.data["last_name"],
+                "Email": serializado.data["email"],
+                "Imagen": cloudinary.CloudinaryImage(
+                    usuario.image_profile.public_id
+                ).build_url(),
+            },
+            status=status.HTTP_200_OK,
+        )
+    except Exception as e:
+        return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def image_profile_change(
+    request, serializer: UsuarioCatalogoSerializer, public_id: str
+):
+    usuario = get_object_or_404(UsuarioCatalogo, id=request.user.id)
+    if "image_profile" not in request.FILES:
+        return Response(
+            {"Error": "No se ha enviado ninguna imagen"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    serializado = serializer
+    if usuario.image_profile:
+        cloudinary.uploader.destroy(public_id)
+    if not serializado.is_valid():
+        return Response(serializado.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# -------------------Editar usuario-------------------#
