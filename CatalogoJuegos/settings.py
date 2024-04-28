@@ -14,6 +14,7 @@ from pathlib import Path
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import dj_database_url
 
 from dotenv import load_dotenv
 import os
@@ -26,13 +27,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-a%_#&^(hu(5*uzg%gkz2)3x&rg_r(ni_+9&2^+(-8s^95yn@d0"
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    default="django-insecure-a%_#&^(hu(5*uzg%gkz2)3x&rg_r(ni_+9&2^+(-8s^95yn@d0",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = "RENDER" not in os.environ
 
 ALLOWED_HOSTS = []
 
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
@@ -85,16 +93,11 @@ WSGI_APPLICATION = "CatalogoJuegos.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
+DATABASE_URL = os.getenv("DATABASE_URL")
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "GameVault_db",
-        "USER": "postgres",
-        "PASSWORD": "Utadeo*2024",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
+    "default": dj_database_url.config(
+        default=DATABASE_URL,
+    )
 }
 
 
@@ -141,7 +144,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "Usuarios.UsuarioCatalogo"
 
-load_dotenv()
 cloudinary.config(
     cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
     api_key=os.getenv("CLOUDINARY_API_KEY"),
