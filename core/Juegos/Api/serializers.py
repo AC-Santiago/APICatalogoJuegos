@@ -44,6 +44,7 @@ class JuegosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Juegos
         fields = [
+            "id",
             "titulo",
             "fecha_Lanzamiento",
             "resumen",
@@ -54,7 +55,6 @@ class JuegosSerializer(serializers.ModelSerializer):
             "menciones_listas",
             "listas_de_deseos",
             "reseñas",
-            "id",
             "generos",
             "plataformas",
             "desarrolladora",
