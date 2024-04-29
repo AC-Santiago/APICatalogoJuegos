@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     # Aplicaciones propias
     "core.Juegos",
     "core.Usuarios",
+    "core.ServicioRecomendacion",
 ]
 
 MIDDLEWARE = [
