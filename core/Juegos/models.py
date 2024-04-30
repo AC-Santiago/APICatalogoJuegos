@@ -86,6 +86,7 @@ class Juegos(models.Model):
 
     class Meta:
         db_table = "Juegos"
+        ordering = ["id"]
 
     def __str__(self) -> str:
         return self.titulo
