@@ -17,6 +17,9 @@ from .Recomendacion import Recomendacion, JuegoGeneroPlataforma
 
 
 # Create your views here.
+recomendacion = Recomendacion()
+
+
 class GenerosViewSet(viewsets.ModelViewSet):
     permission_classes = [IsModeratorOrReadOnly]
     queryset = Generos.objects.all()
@@ -50,8 +53,6 @@ class JuegosViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        print(f"Data: {data}, Archivos: {request.FILES}")
-        # Crear el juego
         juego_serializer = JuegosSerializer(data=data)
         juego_serializer.is_valid(raise_exception=True)
         juego_serializer.save()
@@ -65,6 +66,5 @@ class JuegosViewSet(viewsets.ModelViewSet):
 
 @api_view(["POST"])
 def get_recomendations(request, titulo: str):
-    recomendacion = Recomendacion()
     recomendaciones = recomendacion.get_recommendations_serializable(titulo)
     return Response(recomendaciones, status=status.HTTP_202_ACCEPTED)

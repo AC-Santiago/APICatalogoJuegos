@@ -34,7 +34,6 @@ class Recomendacion:
     def get_recommendations_serializable(self, title: str):
         recomendaciones = self.get_recommendations(title)
         juegos_json = []
-        print(recomendaciones)
         for index, juego in recomendaciones.items():
             juego_obj = Juegos.objects.get(id=index)
             juego_serializer = JuegosSerializer(juego_obj)
