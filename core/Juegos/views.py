@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import viewsets, permissions, parsers, status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,6 +13,7 @@ from .Api.serializers import (
     GenerosSerializer,
 )
 from .permissions import IsModeratorOrReadOnly
+from .Recomendacion import Recomendacion, JuegoGeneroPlataforma
 
 
 # Create your views here.
@@ -59,3 +61,12 @@ class JuegosViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["POST"])
+def get_recomendations(request, titulo: str):
+    print(f"Titulo de entrada: {titulo}")
+    recomendacion = Recomendacion()
+    recomendaciones = recomendacion.get_recommendations(title=titulo)
+    print(f"Recomendaciones: {recomendaciones}")
+    return Response(status=status.HTTP_202_ACCEPTED)
