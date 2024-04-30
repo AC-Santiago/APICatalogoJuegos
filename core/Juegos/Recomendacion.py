@@ -4,20 +4,25 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import NearestNeighbors
 
 from .Api.serializers import JuegosSerializer
-
+import os
 
 from .models import Juegos
 
 
 class Recomendacion:
     def __init__(self):
-        self.df_juegos = pd.read_csv(r"core\Juegos\data\juegos_genpla.csv")
-        self.tfidf = TfidfVectorizer(stop_words="english")
-        self.tfidf_matrix = self.tfidf.fit_transform(
-            self.df_juegos["Plataformas"] + " " + self.df_juegos["Géneros"]
-        )
-        self.model = NearestNeighbors(metric="cosine", algorithm="brute")
-        self.model.fit(self.tfidf_matrix)
+        self.path = "core/Juegos/data/juegos_genpla.csv"
+        if os.path.exists(self.path):
+            self.df_juegos = pd.read_csv(self.path)
+
+            self.tfidf = TfidfVectorizer(stop_words="english")
+            self.tfidf_matrix = self.tfidf.fit_transform(
+                self.df_juegos["Plataformas"] + " " + self.df_juegos["Géneros"]
+            )
+            self.model = NearestNeighbors(metric="cosine", algorithm="brute")
+            self.model.fit(self.tfidf_matrix)
+        else:
+            print("No se ha encontrado el archivo juegos_genpla.csv")
 
     def get_recommendations(self, title: str):
         model = self.model
