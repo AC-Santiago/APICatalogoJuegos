@@ -3,6 +3,8 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import NearestNeighbors
 
+from .Api.serializers import JuegosSerializer
+
 
 from .models import Juegos
 
@@ -26,7 +28,18 @@ class Recomendacion:
         rec_indices = np.delete(rec_indices, title_idx_in_rec)
         rec_titles = self.df_juegos.iloc[rec_indices]["Titulo"]
         rec_titles = rec_titles.drop_duplicates()
-        return rec_titles[:10]
+        return rec_titles[:10].to_dict()
+
+    # Retornar el serializable de cada juegos recomendado
+    def get_recommendations_serializable(self, title: str):
+        recomendaciones = self.get_recommendations(title)
+        juegos_json = []
+        print(recomendaciones)
+        for index, juego in recomendaciones.items():
+            juego_obj = Juegos.objects.get(id=index)
+            juego_serializer = JuegosSerializer(juego_obj)
+            juegos_json.append(juego_serializer.data)
+        return juegos_json
 
 
 class JuegoGeneroPlataforma:

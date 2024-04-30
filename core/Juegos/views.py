@@ -65,8 +65,6 @@ class JuegosViewSet(viewsets.ModelViewSet):
 
 @api_view(["POST"])
 def get_recomendations(request, titulo: str):
-    print(f"Titulo de entrada: {titulo}")
     recomendacion = Recomendacion()
-    recomendaciones = recomendacion.get_recommendations(title=titulo)
-    print(f"Recomendaciones: {recomendaciones}")
-    return Response(status=status.HTTP_202_ACCEPTED)
+    recomendaciones = recomendacion.get_recommendations_serializable(titulo)
+    return Response(recomendaciones, status=status.HTTP_202_ACCEPTED)
