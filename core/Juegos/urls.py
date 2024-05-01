@@ -21,7 +21,7 @@ routers.register(r"catalogo/Generos", GenerosViewSet)
 urlpatterns = [
     path("", include(routers.urls)),
     re_path(
-        r"^catalogo/recomendations/(?P<titulo>.+)/$",
+        r"^catalogo/Juegos/recomendations/(?P<titulo>.+)/$",
         get_recomendations,
         name="recomendations",
     ),
