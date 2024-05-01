@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import viewsets, permissions, parsers, status, serializers
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Juegos, ImagenesJuegos, Plataformas, Desarrolladoras, Generos
 from .Api.serializers import (
@@ -14,7 +14,7 @@ from .Api.serializers import (
 )
 from .permissions import IsModeratorOrReadOnly
 from .Recomendacion import Recomendacion, JuegoGeneroPlataforma
-
+from .Api.filter import JuegosFilter
 
 # Create your views here.
 recomendacion = Recomendacion()
@@ -50,6 +50,8 @@ class JuegosViewSet(viewsets.ModelViewSet):
     queryset = Juegos.objects.all()
     serializer_class = JuegosSerializer
     parser_classes = [parsers.MultiPartParser]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = JuegosFilter
 
     def create(self, request, *args, **kwargs):
         data = request.data
