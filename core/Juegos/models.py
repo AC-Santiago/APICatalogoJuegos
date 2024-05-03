@@ -103,3 +103,33 @@ class ImagenesJuegos(models.Model):
 
     class Meta:
         db_table = "ImagenesJuegos"
+
+
+class Catalogos(models.Model):
+    Nombre = models.CharField(max_length=100)
+    Portada = cloudinary_models.CloudinaryField(
+        "image_game",
+        null=True,
+        blank=True,
+        folder="/CatalogoJuegos/Portadas/",
+        default="CatalogoJuegos/Portadas/tt6wwojkibqqjtlu3o1t",
+    )
+    juegos = models.ManyToManyField(
+        Juegos, blank=True, related_name="catalogos", through="CatalogosXJuegos"
+    )
+    usuario = models.ForeignKey(
+        "Usuarios.UsuarioCatalogo",
+        on_delete=models.CASCADE,
+        related_name="catalogos",
+    )
+
+    class Meta:
+        db_table = "Catalogos"
+
+
+class CatalogosXJuegos(models.Model):
+    catalogo = models.ForeignKey(Catalogos, on_delete=models.CASCADE)
+    juego = models.ForeignKey(Juegos, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "CatalogosXJuegos"

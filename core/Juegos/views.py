@@ -2,19 +2,30 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import viewsets, permissions, parsers, status, serializers
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 from django_filters.rest_framework import DjangoFilterBackend
-
-from .models import Juegos, ImagenesJuegos, Plataformas, Desarrolladoras, Generos
+import copy
+from .models import (
+    Juegos,
+    ImagenesJuegos,
+    Plataformas,
+    Desarrolladoras,
+    Generos,
+    Catalogos,
+)
 from .Api.serializers import (
     JuegosSerializer,
     ImagenesJuegosSerializer,
     PlataformasSerializer,
     DesarrolladorasSerializer,
     GenerosSerializer,
+    CatalogoSerializar,
+    CatalogoSerializarRegister,
 )
-from .permissions import IsModeratorOrReadOnly
-from .Recomendacion import Recomendacion, JuegoGeneroPlataforma
+from .permissions import IsModeratorOrReadOnly, IsOwnerOrModerator
+from .Recomendacion import Recomendacion
 from .Api.filter import JuegosFilter
+import cloudinary.uploader
 
 # Create your views here.
 recomendacion = Recomendacion()
@@ -70,3 +81,77 @@ class JuegosViewSet(viewsets.ModelViewSet):
 def get_recomendations(request, titulo: str):
     recomendaciones = recomendacion.get_recommendations_serializable(titulo)
     return Response(recomendaciones, status=status.HTTP_202_ACCEPTED)
+
+
+# -----------------Catalogos-----------------#
+
+
+@api_view(["POST"])
+@permission_classes([permissions.IsAuthenticated])
+def create_catalogo(request):
+    try:
+        data = copy.deepcopy(request.data)
+        usuario_id = request.user.id
+        data["usuario"] = usuario_id
+        catalogo_serializer = CatalogoSerializarRegister(data=data)
+        catalogo_serializer.is_valid(raise_exception=True)
+        catalogo_serializer.save()
+        return Response(catalogo_serializer.data, status=status.HTTP_202_ACCEPTED)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["DELETE"])
+@permission_classes([permissions.IsAuthenticated])
+def delete_catalogo(request, id: int):
+    catalogo = Catalogos.objects.get(id=id)
+    if catalogo.usuario.id != request.user.id:
+        raise ValidationError("No tienes permisos para eliminar este catalogo")
+    if catalogo.Portada.public_id != "CatalogoJuegos/Portadas/tt6wwojkibqqjtlu3o1t":
+        cloudinary.uploader.destroy(catalogo.Portada.public_id)
+    catalogo.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
+def get_catalogos(request):
+    catalogos = Catalogos.objects.filter(usuario=request.user)
+    serializer = CatalogoSerializar(catalogos, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
+def get_catalogo(request, id: int):
+    catalogo = Catalogos.objects.get(id=id)
+    serializer = CatalogoSerializar(catalogo)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+@permission_classes([IsOwnerOrModerator])
+def add_juego_catalogo(request, id: int, juego_id: int):
+    try:
+        catalogo = Catalogos.objects.get(id=id)
+        juego = Juegos.objects.get(id=juego_id)
+        catalogo.juegos.add(juego)
+        serializers = CatalogoSerializar(catalogo)
+        return Response(serializers.data, status=status.HTTP_202_ACCEPTED)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["DELETE"])
+@permission_classes([IsOwnerOrModerator])
+def delete_juego_catalogo(request, id: int, juego_id: int):
+    try:
+        catalogo = Catalogos.objects.get(id=id)
+        juego = Juegos.objects.get(id=juego_id)
+        catalogo.juegos.remove(juego)
+        return Response(status=status.HTTP_202_ACCEPTED)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# -----------------Catalogos-----------------#

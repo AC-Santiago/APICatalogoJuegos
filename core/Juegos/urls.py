@@ -7,6 +7,12 @@ from .views import (
     DesarrolladorasViewSet,
     GenerosViewSet,
     get_recomendations,
+    create_catalogo,
+    add_juego_catalogo,
+    delete_juego_catalogo,
+    delete_catalogo,
+    get_catalogos,
+    get_catalogo,
 )
 
 routers = routers.DefaultRouter()
@@ -24,5 +30,35 @@ urlpatterns = [
         r"^catalogo/Juegos/recomendations/(?P<titulo>.+)/$",
         get_recomendations,
         name="recomendations",
+    ),
+    re_path(
+        r"^catalogo/Catalogos/create/$",
+        create_catalogo,
+        name="create_catalogo",
+    ),
+    re_path(
+        r"^catalogo/Catalogos/usuario/add_juego/(?P<id>\d+)/(?P<juego_id>\d+)/$",
+        add_juego_catalogo,
+        name="add_juego_catalogo",
+    ),
+    re_path(
+        r"^catalogo/Catalogos/usuario/delete_juego/(?P<id>\d+)/(?P<juego_id>\d+)/$",
+        delete_juego_catalogo,
+        name="delete_juego_catalogo",
+    ),
+    re_path(
+        r"^catalogo/Catalogos/usuario/delete/(?P<id>\d+)/$",
+        delete_catalogo,
+        name="delete_catalogo",
+    ),
+    re_path(
+        r"^catalogo/Catalogos/usuario/$",
+        get_catalogos,
+        name="get_catalogos",
+    ),
+    re_path(
+        r"^catalogo/Catalogos/usuario/(?P<id>\d+)/$",
+        get_catalogo,
+        name="get_catalogo",
     ),
 ]

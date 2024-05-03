@@ -1,5 +1,13 @@
 from rest_framework import serializers
-from ..models import Juegos, ImagenesJuegos, Plataformas, Desarrolladoras, Generos
+from ..models import (
+    Juegos,
+    ImagenesJuegos,
+    Plataformas,
+    Desarrolladoras,
+    Generos,
+    Catalogos,
+)
+from core.Usuarios.models import UsuarioCatalogo
 
 
 class PlataformasSerializer(serializers.ModelSerializer):
@@ -59,4 +67,24 @@ class JuegosSerializer(serializers.ModelSerializer):
             "plataformas",
             "desarrolladora",
         ]
+        read_only_fields = ("id",)
+
+
+class CatalogoSerializar(serializers.ModelSerializer):
+    juegos = JuegosSerializer(many=True)
+
+    class Meta:
+        model = Catalogos
+        fields = ["id", "Nombre", "Portada", "usuario", "juegos"]
+        read_only_fields = ("id",)
+
+
+class CatalogoSerializarRegister(serializers.ModelSerializer):
+    juegos = serializers.SlugRelatedField(
+        many=True, queryset=Juegos.objects.all(), slug_field="id"
+    )
+
+    class Meta:
+        model = Catalogos
+        fields = ["id", "Nombre", "Portada", "usuario", "juegos"]
         read_only_fields = ("id",)
