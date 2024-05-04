@@ -50,9 +50,7 @@ class JuegosSerializer(serializers.ModelSerializer):
     desarrolladora = serializers.SlugRelatedField(
         many=True, queryset=Desarrolladoras.objects.all(), slug_field="nombre"
     )
-    images = serializers.SlugRelatedField(
-        many=True, queryset=ImagenesJuegos.objects.all(), slug_field="imagen_game"
-    )
+    images = serializers.SerializerMethodField()
 
     class Meta:
         model = Juegos
@@ -74,6 +72,9 @@ class JuegosSerializer(serializers.ModelSerializer):
             "desarrolladora",
         ]
         read_only_fields = ("id",)
+
+    def get_images(self, obj):
+        return [img.imagen_game.url for img in obj.images.all()]
 
 
 class CatalogoSerializar(serializers.ModelSerializer):
