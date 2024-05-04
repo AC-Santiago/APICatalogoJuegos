@@ -94,7 +94,7 @@ class Juegos(models.Model):
 
 class ImagenesJuegos(models.Model):
     imagen_game = cloudinary_models.CloudinaryField(
-        "image_game",
+        "imagen_game",
         null=True,
         blank=True,
         folder="/CatalogoJuegos/Juegos/",
@@ -103,6 +103,7 @@ class ImagenesJuegos(models.Model):
 
     class Meta:
         db_table = "ImagenesJuegos"
+        ordering = ["id"]
 
 
 class Catalogos(models.Model):

@@ -32,6 +32,8 @@ class GenerosSerializer(serializers.ModelSerializer):
 
 
 class ImagenesJuegosSerializer(serializers.ModelSerializer):
+    juego = serializers.SlugRelatedField(queryset=Juegos.objects.all(), slug_field="id")
+
     class Meta:
         model = ImagenesJuegos
         fields = ["imagen_game", "juego"]
@@ -48,6 +50,7 @@ class JuegosSerializer(serializers.ModelSerializer):
     desarrolladora = serializers.SlugRelatedField(
         many=True, queryset=Desarrolladoras.objects.all(), slug_field="nombre"
     )
+    images = ImagenesJuegosSerializer(many=True)
 
     class Meta:
         model = Juegos
@@ -62,6 +65,7 @@ class JuegosSerializer(serializers.ModelSerializer):
             "comprado_no_jugado",
             "menciones_listas",
             "listas_de_deseos",
+            "images",
             "reseñas",
             "generos",
             "plataformas",
