@@ -50,7 +50,9 @@ class JuegosSerializer(serializers.ModelSerializer):
     desarrolladora = serializers.SlugRelatedField(
         many=True, queryset=Desarrolladoras.objects.all(), slug_field="nombre"
     )
-    images = ImagenesJuegosSerializer(many=True)
+    images = serializers.SlugRelatedField(
+        many=True, queryset=ImagenesJuegos.objects.all(), slug_field="imagen_game"
+    )
 
     class Meta:
         model = Juegos
