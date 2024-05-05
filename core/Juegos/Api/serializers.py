@@ -8,6 +8,7 @@ from ..models import (
     Catalogos,
 )
 from core.Usuarios.models import UsuarioCatalogo
+from .optimize_url import optimize_url
 
 
 class PlataformasSerializer(serializers.ModelSerializer):
@@ -79,19 +80,31 @@ class JuegosSerializer(serializers.ModelSerializer):
 
 class CatalogoSerializar(serializers.ModelSerializer):
     juegos = JuegosSerializer(many=True)
+    Portada = serializers.SerializerMethodField()
 
     class Meta:
         model = Catalogos
         fields = ["id", "Nombre", "Portada", "usuario", "juegos"]
         read_only_fields = ("id",)
+
+    def get_Portada(self, obj):
+        if obj.Portada:
+            return optimize_url(obj.Portada.public_id)
+        return None
 
 
 class CatalogoSerializarRegister(serializers.ModelSerializer):
     juegos = serializers.SlugRelatedField(
         many=True, queryset=Juegos.objects.all(), slug_field="id"
     )
+    Portada = serializers.SerializerMethodField()
 
     class Meta:
         model = Catalogos
         fields = ["id", "Nombre", "Portada", "usuario", "juegos"]
         read_only_fields = ("id",)
+
+    def get_Portada(self, obj):
+        if obj.Portada:
+            return optimize_url(obj.Portada.public_id)
+        return None

@@ -7,6 +7,7 @@ from .views import (
     edit_user,
     send_verification_email_user,
     verify_email,
+    change_password,
 )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     re_path(r"profile/", profile),
     re_path(r"delete_account/(?P<id_usuario>\d+)/", delete_account),
     re_path(r"edit_user/", edit_user),
+    re_path(r"change_password/", change_password),
 ]

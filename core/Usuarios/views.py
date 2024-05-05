@@ -177,3 +177,30 @@ def delete_old_codes():
 
 
 schedule.every(1).minutes.do(delete_old_codes)
+
+
+# ----------------------Cambiar Contrasena----------------------#
+@api_view(["POST"])
+def change_password(request):
+    try:
+        usuario = get_object_or_404(UsuarioCatalogo, email=request.data["email"])
+        user_code = request.data["code"]
+        user_code_db = EmailVerificationCode.objects.filter(email=usuario.email).last()
+        if user_code_db is None:
+            return Response(
+                {"Error": "No se encontró el código de verificación"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if user_code != user_code_db.code:
+            return Response(
+                {"Error": "El código no coincide"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        usuario.set_password(request.data["password"])
+        usuario.save()
+        user_code_db.delete()
+        return Response(
+            {"Mensaje": "Contraseña cambiada correctamente"},
+            status=status.HTTP_200_OK,
+        )
+    except Exception as e:
+        return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

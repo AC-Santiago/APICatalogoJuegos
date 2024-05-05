@@ -27,6 +27,7 @@ from .Recomendacion import Recomendacion
 from .Api.filter import JuegosFilter
 import cloudinary.uploader
 
+
 # Create your views here.
 recomendacion = Recomendacion()
 
