@@ -172,7 +172,7 @@ def verify_email(request):
 
 
 def delete_old_codes():
-    ten_minutes_ago = timezone.now() - timezone.timedelta(minutes=10)
+    ten_minutes_ago = timezone.now() - timezone.timedelta(minutes=3)
     EmailVerificationCode.objects.filter(created_at__lt=ten_minutes_ago).delete()
 
 
