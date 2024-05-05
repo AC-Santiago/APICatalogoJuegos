@@ -3,14 +3,17 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from django.utils import timezone
+from django.core.mail import send_mail
+import random
+import schedule
 import cloudinary.uploader
 
 from django.shortcuts import get_object_or_404
 
 from .Api.serializers import UsuarioCatalogoSerializer
 from .Api.optimize_url import optimize_url
-from .models import UsuarioCatalogo
+from .models import UsuarioCatalogo, EmailVerificationCode
 from .permissions import IsOwnerOrModerator
 
 
@@ -123,3 +126,54 @@ def image_profile_change(
 
 
 # -------------------Editar usuario-------------------#
+
+
+# -------------------Verificar Correo-------------------#
+email_codes = {}
+
+
+@api_view(["POST"])
+def send_verification_email_user(request):
+    try:
+        subject = "Código de verificación"
+        code = str(random.randint(1000, 9999))
+        message = "Tu código de verificación es: " + code
+        to_email = request.data["to_email"]
+        email_codes[to_email] = code
+        send_mail(subject, message, None, [to_email])
+        EmailVerificationCode.objects.create(email=to_email, code=code)
+        return Response(
+            {"Mensaje": "Correo enviado correctamente"}, status=status.HTTP_200_OK
+        )
+    except Exception as e:
+        return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def verify_email(request):
+    try:
+        email = request.data["email"]
+        code = request.data["code"]
+        verification_code = EmailVerificationCode.objects.filter(
+            email=email, code=code
+        ).first()
+        if verification_code:
+            return Response(
+                {"Mensaje": "Correo verificado correctamente"},
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                {"Error": "Código incorrecto o correo no encontrado"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+    except Exception as e:
+        return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def delete_old_codes():
+    ten_minutes_ago = timezone.now() - timezone.timedelta(minutes=10)
+    EmailVerificationCode.objects.filter(created_at__lt=ten_minutes_ago).delete()
+
+
+schedule.every(1).minutes.do(delete_old_codes)

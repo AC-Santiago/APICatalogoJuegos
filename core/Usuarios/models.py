@@ -19,3 +19,12 @@ class UsuarioCatalogo(AbstractUser):
 
     def __str__(self) -> str:
         return self.username
+
+
+class EmailVerificationCode(models.Model):
+    email = models.EmailField()
+    code = models.CharField(max_length=4)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "EmailVerificationCode"
