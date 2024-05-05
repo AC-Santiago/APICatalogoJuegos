@@ -93,12 +93,7 @@ class Juegos(models.Model):
 
 
 class ImagenesJuegos(models.Model):
-    imagen_game = cloudinary_models.CloudinaryField(
-        "imagen_game",
-        null=True,
-        blank=True,
-        folder="/CatalogoJuegos/Juegos/",
-    )
+    imagen_game = models.URLField(null=True, blank=True)
     juego = models.ForeignKey(Juegos, on_delete=models.CASCADE, related_name="images")
 
     class Meta:

@@ -74,7 +74,7 @@ class JuegosSerializer(serializers.ModelSerializer):
         read_only_fields = ("id",)
 
     def get_images(self, obj):
-        return [img.imagen_game.url for img in obj.images.all()]
+        return [img.imagen_game for img in obj.images.all()]
 
 
 class CatalogoSerializar(serializers.ModelSerializer):
