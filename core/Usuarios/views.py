@@ -8,9 +8,7 @@ from django.core.mail import send_mail
 import random
 import schedule
 import cloudinary.uploader
-
 from django.shortcuts import get_object_or_404
-
 from .Api.serializers import UsuarioCatalogoSerializer
 from .Api.optimize_url import optimize_url
 from .models import UsuarioCatalogo, EmailVerificationCode
@@ -89,9 +87,11 @@ def edit_user(request):
         )
         if not serializado.is_valid():
             return Response(serializado.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializado.save()
         if "image_profile" in request.FILES:
             image_profile_change(request, serializado, usuario.image_profile.public_id)
-        usuario.set_password(request.data["password"])
+        if request.data.get("password") != None:
+            usuario.set_password(request.data["password"])
         usuario.save()
         return Response(
             {
