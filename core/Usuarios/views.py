@@ -8,9 +8,7 @@ from django.core.mail import send_mail
 import random
 import schedule
 import cloudinary.uploader
-
 from django.shortcuts import get_object_or_404
-
 from .Api.serializers import UsuarioCatalogoSerializer
 from .Api.optimize_url import optimize_url
 from .models import UsuarioCatalogo, EmailVerificationCode
@@ -89,9 +87,11 @@ def edit_user(request):
         )
         if not serializado.is_valid():
             return Response(serializado.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializado.save()
         if "image_profile" in request.FILES:
             image_profile_change(request, serializado, usuario.image_profile.public_id)
-        usuario.set_password(request.data["password"])
+        if request.data.get("password") != None:
+            usuario.set_password(request.data["password"])
         usuario.save()
         return Response(
             {
@@ -172,8 +172,35 @@ def verify_email(request):
 
 
 def delete_old_codes():
-    ten_minutes_ago = timezone.now() - timezone.timedelta(minutes=10)
+    ten_minutes_ago = timezone.now() - timezone.timedelta(minutes=3)
     EmailVerificationCode.objects.filter(created_at__lt=ten_minutes_ago).delete()
 
 
 schedule.every(1).minutes.do(delete_old_codes)
+
+
+# ----------------------Cambiar Contrasena----------------------#
+@api_view(["POST"])
+def change_password(request):
+    try:
+        usuario = get_object_or_404(UsuarioCatalogo, email=request.data["email"])
+        user_code = request.data["code"]
+        user_code_db = EmailVerificationCode.objects.filter(email=usuario.email).last()
+        if user_code_db is None:
+            return Response(
+                {"Error": "No se encontró el código de verificación"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if user_code != user_code_db.code:
+            return Response(
+                {"Error": "El código no coincide"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        usuario.set_password(request.data["password"])
+        usuario.save()
+        user_code_db.delete()
+        return Response(
+            {"Mensaje": "Contraseña cambiada correctamente"},
+            status=status.HTTP_200_OK,
+        )
+    except Exception as e:
+        return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
