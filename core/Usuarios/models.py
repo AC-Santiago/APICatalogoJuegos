@@ -11,6 +11,7 @@ class UsuarioCatalogo(AbstractUser):
         null=True,
         blank=True,
         folder="/CatalogoJuegos/Usuarios/",
+        default="CatalogoJuegos/Portadas/tt6wwojkibqqjtlu3o1t",
     )
     is_moderator = models.BooleanField(default=False)
 
