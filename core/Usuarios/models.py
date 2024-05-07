@@ -6,6 +6,7 @@ from cloudinary import models as cloudinary_models
 
 # Create your models here.
 class UsuarioCatalogo(AbstractUser):
+    email = models.EmailField(unique=True)
     image_profile = cloudinary_models.CloudinaryField(
         "image_profile",
         null=True,
