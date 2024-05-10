@@ -129,19 +129,53 @@ def image_profile_change(
 
 
 # -------------------Verificar Correo-------------------#
-email_codes = {}
+
+
+def send_email_verification_code(*email: str, code: str):
+    """
+    Función para enviar un correo con un código de verificación
+
+    Args:
+        email (str): Correo al que se enviará el código
+        code (str): Código de verificación
+
+    Returns:
+        None
+    """
+    subject = "Código de verificación"
+    message = "Tu código de verificación es: " + code
+    send_mail(subject, message, None, [email])
 
 
 @api_view(["POST"])
-def send_verification_email_user(request):
+def send_verification_email_user_resgister(request):
     try:
-        subject = "Código de verificación"
+        if UsuarioCatalogo.objects.filter(email=request.data["to_email"]).exists():
+            return Response(
+                {"Error": "El correo ya está registrado"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         code = str(random.randint(1000, 9999))
-        message = "Tu código de verificación es: " + code
-        to_email = request.data["to_email"]
-        email_codes[to_email] = code
-        send_mail(subject, message, None, [to_email])
-        EmailVerificationCode.objects.create(email=to_email, code=code)
+        send_email_verification_code(email=request.data["to_email"], code=code)
+        EmailVerificationCode.objects.create(email=request.data["to_email"], code=code)
+        return Response(
+            {"Mensaje": "Correo enviado correctamente"}, status=status.HTTP_200_OK
+        )
+    except Exception as e:
+        return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def send_verification_email_user_chance_password(request):
+    try:
+        if not UsuarioCatalogo.objects.filter(email=request.data["to_email"]).exists():
+            return Response(
+                {"Error": "El correo no está registrado"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        code = str(random.randint(1000, 9999))
+        send_email_verification_code(email=request.data["to_email"], code=code)
+        EmailVerificationCode.objects.create(email=request.data["to_email"], code=code)
         return Response(
             {"Mensaje": "Correo enviado correctamente"}, status=status.HTTP_200_OK
         )
@@ -199,7 +233,7 @@ def change_password(request):
         usuario.save()
         user_code_db.delete()
         return Response(
-            {"Mensaje": "Contraseña cambiada correctamente"},
+            {"Mensaje": "Contraseña cambiada correctamente}"},
             status=status.HTTP_200_OK,
         )
     except Exception as e:
