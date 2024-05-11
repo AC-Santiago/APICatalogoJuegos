@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn CatalogoJuegos.wsgi
+web: gunicorn CatalogoJuegos.wsgi
