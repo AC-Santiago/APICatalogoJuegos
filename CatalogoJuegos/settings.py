@@ -96,25 +96,17 @@ WSGI_APPLICATION = "CatalogoJuegos.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASE_URL = os.getenv("DATABASE_URL")
-print(f"Esta en desarrollo: {DEBUG}")
-if DEBUG:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "GameVault_db",
-            "USER": "postgres",
-            "PASSWORD": "Utadeo*2024",
-            "HOST": "localhost",
-            "PORT": "5432",
-        }
+load_dotenv()
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("NAME"),
+        "USER": os.getenv("USER"),
+        "PASSWORD": os.getenv("PASSWORD"),
+        "HOST": os.getenv("HOST"),
+        "PORT": os.getenv("PORT"),
     }
-else:
-    if DATABASE_URL:
-        DATABASES = {
-            "default": dj_database_url.config(
-                default=DATABASE_URL,
-            )
-        }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
