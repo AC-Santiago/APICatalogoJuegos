@@ -131,7 +131,7 @@ def image_profile_change(
 # -------------------Verificar Correo-------------------#
 
 
-def send_email_verification_code(*email: str, code: str):
+def send_email_verification_code(*,email: str, code: str):
     """
     Función para enviar un correo con un código de verificación
 
@@ -143,7 +143,7 @@ def send_email_verification_code(*email: str, code: str):
         None
     """
     subject = "Código de verificación"
-    message = "Tu código de verificación es: " + code
+    message = f"Tu código de verificación es: {code}"
     send_mail(subject, message, None, [email])
 
 
