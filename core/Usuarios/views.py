@@ -8,6 +8,7 @@ from django.core.mail import send_mail
 import random
 import schedule
 import cloudinary.uploader
+from cloudinary.uploader import upload
 from django.shortcuts import get_object_or_404
 from .Api.serializers import UsuarioCatalogoSerializer
 from .Api.optimize_url import optimize_url
@@ -87,9 +88,9 @@ def edit_user(request):
         )
         if not serializado.is_valid():
             return Response(serializado.errors, status=status.HTTP_400_BAD_REQUEST)
-        serializado.save()
         if "image_profile" in request.FILES:
             image_profile_change(request, serializado, usuario.image_profile.public_id)
+        serializado.save()
         if request.data.get("password") != None:
             usuario.set_password(request.data["password"])
         usuario.save()
@@ -112,17 +113,13 @@ def edit_user(request):
 def image_profile_change(
     request, serializer: UsuarioCatalogoSerializer, public_id: str
 ):
-    usuario = get_object_or_404(UsuarioCatalogo, id=request.user.id)
-    if "image_profile" not in request.FILES:
-        return Response(
-            {"Error": "No se ha enviado ninguna imagen"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-    serializado = serializer
-    if usuario.image_profile:
+    try:
         cloudinary.uploader.destroy(public_id)
-    if not serializado.is_valid():
-        return Response(serializado.errors, status=status.HTTP_400_BAD_REQUEST)
+        image_profile = request.FILES["image_profile"]
+        upload_result = upload(image_profile, folder="CatalogoJuegos/Juegos")
+        serializer.save(image_profile=upload_result["public_id"])
+    except Exception as e:
+        raise Exception(str(e))
 
 
 # -------------------Editar usuario-------------------#
