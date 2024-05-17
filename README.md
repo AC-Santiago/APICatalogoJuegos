@@ -225,7 +225,3 @@ Response;;;;;;'''
 ```
 
 - ####
-
-```http
-  POST /catalogo/Catalogos/usuario/
-```
