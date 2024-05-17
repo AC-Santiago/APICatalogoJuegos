@@ -147,11 +147,13 @@ def get_catalogo(request, id: int):
 
 @api_view(["POST"])
 @permission_classes([IsOwnerOrModerator])
-def add_juego_catalogo(request, id: int, juego_id: int):
+def add_juego_catalogo(request, id: int):
     try:
+        juegos_ids = request.data.get("juego_id", [])
         catalogo = Catalogos.objects.get(id=id)
-        juego = Juegos.objects.get(id=juego_id)
-        catalogo.juegos.add(juego)
+        for juego_id in juegos_ids:
+            juego = Juegos.objects.get(id=int(juego_id))
+            catalogo.juegos.add(juego)
         serializers = CatalogoSerializar(catalogo)
         return Response(serializers.data, status=status.HTTP_202_ACCEPTED)
     except Exception as e:
