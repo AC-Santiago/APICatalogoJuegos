@@ -37,7 +37,7 @@ urlpatterns = [
         name="create_catalogo",
     ),
     re_path(
-        r"^catalogo/Catalogos/usuario/add_juego/(?P<id>\d+)/(?P<juego_id>\d+)/$",
+        r"^catalogo/Catalogos/usuario/add_juego/(?P<id>\d+)/$",
         add_juego_catalogo,
         name="add_juego_catalogo",
     ),
