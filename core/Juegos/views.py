@@ -104,6 +104,18 @@ def create_catalogo(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(["PUT"])
+@permission_classes([IsOwnerOrModerator])
+def update_catalogo(request, id: int):
+    try:
+        catalogo = Catalogos.objects.get(id=id)
+        data = copy.deepcopy(request.data)
+        catalogo_serializer = CatalogoSerializarRegister(catalogo, data=data)
+        catalogo_serializer.is_valid(raise_exception=True)
+        catalogo_serializer.save()
+        return Response(catalogo_serializer.data, status=status.HTTP_202_ACCEPTED)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["DELETE"])
 @permission_classes([permissions.IsAuthenticated])
