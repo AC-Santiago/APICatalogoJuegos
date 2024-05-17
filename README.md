@@ -182,7 +182,7 @@ La url base de la API, es:
 | :-------- | :------- | :------------------------------------------------------------------------ |
 | `titulo`  | `string` | **Requiere**. Es el nombre del juego al cual se solicitan Recomendaciones |
 
-Response;;;;;;'''
+Response
 
 - #### Crear Catalogo
 
@@ -226,29 +226,6 @@ Response;;;;;;'''
   GET /catalogo/Juegos/?limit={int}&offset={int}
 ```
 
-- #### Peticion que envia datos al servidor para crear un recurso nuevo
-
-```http
-  POST /catalogo/parametro/send
-```
-
-- #### Peticion que actualiza un recurso en el servidor
-
-```http
-  PUT /catalogo/parametro/send
-```
-
-- #### Peticion que actualizara un recurso especifico del servidor
-
-```http
-  PATCH /catalogo/parametro/send
-```
-
-- #### Peticion que elimina un recurso especifico del servidor
-
-```http
-  DELETE /catalogo/parametro/send
-```
 
 - #### Crear Catalogo
 
