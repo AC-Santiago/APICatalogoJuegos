@@ -226,25 +226,25 @@ Response;;;;;;'''
   GET /catalogo/Juegos/?limit={int}&offset={int}
 ```
 
-- #### Peticion post
+- #### Peticion "post"
 
 ```http
   POST /URL/send
 ```
 
-- #### Peticion put
+- #### Peticion "put"
 
 ```http
   PUT /URL/send
 ```
 
-- #### Peticion patch
+- #### Peticion "patch"
 
 ```http
   PATCH /URL/send
 ```
 
-- #### Peticion delete
+- #### Peticion "delete"
 
 ```http
   DELETE /URL/send
