@@ -137,7 +137,7 @@ def get_catalogo(request, id: int):
 @permission_classes([IsOwnerOrModerator])
 def add_juego_catalogo(request, id: int):
     try:
-        juegos_ids = request.query_params.getlist("juego_id", default=[])
+        juegos_ids = request.data.get("juego_id", [])
         catalogo = Catalogos.objects.get(id=id)
         for juego_id in juegos_ids:
             juego = Juegos.objects.get(id=int(juego_id))
