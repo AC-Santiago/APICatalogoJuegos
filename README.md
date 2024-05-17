@@ -229,24 +229,65 @@ Response;;;;;;'''
 - #### Peticion que envia datos al servidor para crear un recurso nuevo
 
 ```http
-  POST /https://apicatalogojuegos-production.up.railway.app/parametro/send
+  POST /catalogo/parametro/send
 ```
 
 - #### Peticion que actualiza un recurso en el servidor
 
 ```http
-  PUT /https://apicatalogojuegos-production.up.railway.app/parametro/send
+  PUT /catalogo/parametro/send
 ```
 
 - #### Peticion que actualizara un recurso especifico del servidor
 
 ```http
-  PATCH /https://apicatalogojuegos-production.up.railway.app/parametro/send
+  PATCH /catalogo/parametro/send
 ```
 
 - #### Peticion que elimina un recurso especifico del servidor
 
 ```http
-  DELETE /https://apicatalogojuegos-production.up.railway.app/parametro/send
+  DELETE /catalogo/parametro/send
 ```
 
+- #### Crear Catalogo
+
+```http
+  POST /catalogo/Catalogos/create/
+```
+
+- #### Se eliminara un juego especifico del catalogo
+
+```http
+  POST /catalogo/Catalogos/usuario/delete_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
+```
+
+- #### Muestra los catalogos de un usuario en especifico
+
+```http
+  POST /catalogo/Catalogos/usuario/(?P<id>\d+)/
+```
+
+- #### Se eliminara un juego del catalogo seleccionado
+
+```http
+  DELETE /catalogo/Catalogos/usuario/delete_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
+```
+
+- #### Se eliminara un usuario especifico
+
+```http
+  DELETE /catalogo/Catalogos/usuario/(?P<id>\d+)/
+```
+
+- #### Elimina los catalogos de un usuario en especifico
+
+```http
+  DELETE /catalogo/Catalogos/usuario/(?P<id>\d+)/
+```
+
+- #### Elimina un catalogo
+
+```http
+  DELETE /catalogo/
+```
