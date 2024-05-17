@@ -223,3 +223,9 @@ Response;;;;;;'''
 ```http
   GET /catalogo/Juegos/?limit={int}&offset={int}
 ```
+
+- ####
+
+```http
+  POST /catalogo/Catalogos/usuario/
+```
