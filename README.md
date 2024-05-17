@@ -48,13 +48,13 @@ La url base de la API, es:
 
 ### Urls catalogo
 
-- #### Obtener Urls catalogo:
+- Obtener Urls catalogo:
 
-```http
+```https
   GET /GameVault/
 ```
 
-##### Responce:
+Responce:
 
 ```Response
   {
@@ -85,7 +85,7 @@ La url base de la API, es:
 | `limit`   | `string` | Por defecto viene con un limit de 10 por pagina |
 | `offset`  | `string` | El offset determina desde que item empieza      |
 
-##### Response:
+Response:
 
 ```Response
 {
@@ -136,7 +136,7 @@ La url base de la API, es:
 | :-------- | :------- | :------------------------------------------- |
 | `id`      | `string` | **Requiere**. Que la id pertenzca a un Juego |
 
-##### Response:
+Response:
 
 ```Response
 {
@@ -182,43 +182,43 @@ La url base de la API, es:
 | :-------- | :------- | :------------------------------------------------------------------------ |
 | `titulo`  | `string` | **Requiere**. Es el nombre del juego al cual se solicitan Recomendaciones |
 
-Response;;;;;;'''
+Response
 
-- ####
+- Crear un Catalogo
 
 ```http
-  GET /catalogo/Catalogos/create/
+  POST /catalogo/Catalogos/create/
 ```
 
-- ####
+- 
 
 ```http
-  GET /catalogo/Catalogos/usuario/add_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
+  POST /catalogo/Catalogos/usuario/add_juego/:id/
 ```
 
 ```http
   GET /catalogo/Catalogos/usuario/delete_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
 ```
 
-- ####
+- 
 
 ```http
   GET /catalogo/Catalogos/usuario/delete/(?P<id>\d+)/
 ```
 
-- ####
+- 
 
 ```http
   GET /catalogo/Catalogos/usuario/
 ```
 
-- ####
+- 
 
 ```http
   GET /catalogo/Catalogos/usuario/(?P<id>\d+)/
 ```
 
-- ####
+- 
 
 ```http
   GET /catalogo/Juegos/?limit={int}&offset={int}
