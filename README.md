@@ -184,44 +184,69 @@ La url base de la API, es:
 
 Response;;;;;;'''
 
-- ####
+- #### Crear Catalogo
 
 ```http
   GET /catalogo/Catalogos/create/
 ```
 
-- ####
+- #### Se agregara un juego especifico al catalogo
 
 ```http
   GET /catalogo/Catalogos/usuario/add_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
 ```
 
+- #### Se eliminara un juego del catalogo seleccionado
+
 ```http
   GET /catalogo/Catalogos/usuario/delete_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
 ```
 
-- ####
+- #### Se eliminara un usuario especifico
 
 ```http
   GET /catalogo/Catalogos/usuario/delete/(?P<id>\d+)/
 ```
 
-- ####
+- #### Muestra los catalogos del usuario
 
 ```http
   GET /catalogo/Catalogos/usuario/
 ```
 
-- ####
+- #### Muestra los catalogos de un usuario en especifico
 
 ```http
   GET /catalogo/Catalogos/usuario/(?P<id>\d+)/
 ```
 
-- ####
+- #### Limita la cantidad de juegos en una lista
 
 ```http
   GET /catalogo/Juegos/?limit={int}&offset={int}
 ```
 
-- ####
+- #### Peticion POST
+
+```http
+  POST /URL/send
+```
+
+- #### Peticion PUT
+
+```http
+  PUT /URL/send
+```
+
+- #### Peticion PATCH
+
+```http
+  PATCH /URL/send
+```
+
+- #### Peticion DELETE
+
+```http
+  DELETE /URL/send
+```
+
