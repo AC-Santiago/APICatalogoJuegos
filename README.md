@@ -226,27 +226,27 @@ Response;;;;;;'''
   GET /catalogo/Juegos/?limit={int}&offset={int}
 ```
 
-- #### Peticion "post"
+- #### Peticion que envia datos al servidor para crear un recurso nuevo
 
 ```http
-  POST /URL/send
+  POST /https://apicatalogojuegos-production.up.railway.app/parametro/send
 ```
 
-- #### Peticion "put"
+- #### Peticion que actualiza un recurso en el servidor
 
 ```http
-  PUT /URL/send
+  PUT /https://apicatalogojuegos-production.up.railway.app/parametro/send
 ```
 
-- #### Peticion "patch"
+- #### Peticion que actualizara un recurso especifico del servidor
 
 ```http
-  PATCH /URL/send
+  PATCH /https://apicatalogojuegos-production.up.railway.app/parametro/send
 ```
 
-- #### Peticion "delete"
+- #### Peticion que elimina un recurso especifico del servidor
 
 ```http
-  DELETE /URL/send
+  DELETE /https://apicatalogojuegos-production.up.railway.app/parametro/send
 ```
 
