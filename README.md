@@ -50,7 +50,7 @@ La url base de la API, es:
 
 - Obtener Urls catalogo:
 
-```https
+```API
   GET /GameVault/
 ```
 
@@ -68,15 +68,15 @@ Responce:
 
 - #### Lista de Juegos
 
-```http
+```API
   GET /catalogo/Juegos/
 ```
 
-```http
+```API
   GET /GameVault/catalogo/Juegos/?limit={int}
 ```
 
-```http
+```API
   GET /catalogo/Juegos/?limit={int}&offset={int}
 ```
 
@@ -128,7 +128,7 @@ Response:
 
 - #### Seleccionar un Juego
 
-```http
+```API
   GET /catalogo/Juegos/:id/
 ```
 
@@ -174,7 +174,7 @@ Response:
 
 - #### Solicitar Recomendaciones
 
-```http
+```API
   POST /catalogo/Juegos/recomendations/:titulo/
 ```
 
@@ -184,84 +184,36 @@ Response:
 
 - Crear un Catalogo
 
-```http
+```API
   POST /catalogo/Catalogos/create/
 ```
 
 - Se agregara un juego especifico al catalogo
 
-```http
+```API
   POST /catalogo/Catalogos/usuario/add_juego/:id/
 ```
 
 - Se eliminara un juego del catalogo seleccionado
 
-```http
-  GET /catalogo/Catalogos/usuario/delete_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
+```API
+  DELETE /catalogo/Catalogos/usuario/delete_juego/:id_catalogo/:id_juego/
 ```
 
 - Se eliminara un usuario especifico
 
-```http
-  GET /catalogo/Catalogos/usuario/delete/(?P<id>\d+)/
+```API
+  DELETE /catalogo/Catalogos/usuario/delete/(?P<id>\d+)/
 ```
 
 - Muestra los catalogos del usuario
 
-```http
+```API
   GET /catalogo/Catalogos/usuario/
 ```
 
 - Muestra los catalogos de un usuario en especifico
 
-```http
+```API
   GET /catalogo/Catalogos/usuario/(?P<id>\d+)/
-```
-
-- Limita la cantidad de juegos en una lista
-
-```http
-  GET /catalogo/Juegos/?limit={int}&offset={int}
-```
-
-- Crear Catalogo
-
-```http
-  POST /catalogo/Catalogos/create/
-```
-
-- Se eliminara un juego especifico del catalogo
-
-```http
-  POST /catalogo/Catalogos/usuario/delete_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
-```
-
-- #### Muestra los catalogos de un usuario en especifico
-
-```http
-  POST /catalogo/Catalogos/usuario/(?P<id>\d+)/
-```
-
-- #### Se eliminara un juego del catalogo seleccionado
-
-```http
-  DELETE /catalogo/Catalogos/usuario/delete_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
-```
-
-- #### Se eliminara un usuario especifico
-
-```http
-  DELETE /catalogo/Catalogos/usuario/(?P<id>\d+)/
-```
-
-- #### Elimina los catalogos de un usuario en especifico
-
-```http
-  DELETE /catalogo/Catalogos/usuario/(?P<id>\d+)/
-```
-
-- #### Elimina un catalogo
-
-```http
-  DELETE /catalogo/
 ```
