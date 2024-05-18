@@ -104,6 +104,20 @@ def create_catalogo(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(["PATCH"])
+@permission_classes([IsOwnerOrModerator])
+def update_catalogo(request, id: int):
+    try:
+        catalogo = Catalogos.objects.get(id=id)
+        if catalogo.usuario.id != request.user.id:
+            raise ValidationError("No tienes permisos para editar este catalogo")
+        data = copy.deepcopy(request.data)
+        catalogo_serializer = CatalogoSerializarRegister(catalogo, data=data, partial=True)
+        catalogo_serializer.is_valid(raise_exception=True)
+        catalogo_serializer.save()
+        return Response(catalogo_serializer.data, status=status.HTTP_202_ACCEPTED)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["DELETE"])
 @permission_classes([permissions.IsAuthenticated])
@@ -135,11 +149,13 @@ def get_catalogo(request, id: int):
 
 @api_view(["POST"])
 @permission_classes([IsOwnerOrModerator])
-def add_juego_catalogo(request, id: int, juego_id: int):
+def add_juego_catalogo(request, id: int):
     try:
+        juegos_ids = request.data.get("juego_id", [])
         catalogo = Catalogos.objects.get(id=id)
-        juego = Juegos.objects.get(id=juego_id)
-        catalogo.juegos.add(juego)
+        for juego_id in juegos_ids:
+            juego = Juegos.objects.get(id=int(juego_id))
+            catalogo.juegos.add(juego)
         serializers = CatalogoSerializar(catalogo)
         return Response(serializers.data, status=status.HTTP_202_ACCEPTED)
     except Exception as e:

@@ -13,6 +13,7 @@ from .views import (
     delete_catalogo,
     get_catalogos,
     get_catalogo,
+    update_catalogo,
 )
 
 routers = routers.DefaultRouter()
@@ -37,7 +38,7 @@ urlpatterns = [
         name="create_catalogo",
     ),
     re_path(
-        r"^catalogo/Catalogos/usuario/add_juego/(?P<id>\d+)/(?P<juego_id>\d+)/$",
+        r"^catalogo/Catalogos/usuario/add_juego/(?P<id>\d+)/$",
         add_juego_catalogo,
         name="add_juego_catalogo",
     ),
@@ -60,5 +61,10 @@ urlpatterns = [
         r"^catalogo/Catalogos/usuario/(?P<id>\d+)/$",
         get_catalogo,
         name="get_catalogo",
+    ),
+    re_path(
+        r"^catalogo/Catalogos/usuario/update/(?P<id>\d+)/$",
+        update_catalogo,
+        name="update_catalogo",
     ),
 ]

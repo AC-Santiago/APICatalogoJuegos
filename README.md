@@ -48,13 +48,13 @@ La url base de la API, es:
 
 ### Urls catalogo
 
-- #### Obtener Urls catalogo:
+- Obtener Urls catalogo:
 
-```http
+```https
   GET /GameVault/
 ```
 
-##### Responce:
+Responce:
 
 ```Response
   {
@@ -85,7 +85,7 @@ La url base de la API, es:
 | `limit`   | `string` | Por defecto viene con un limit de 10 por pagina |
 | `offset`  | `string` | El offset determina desde que item empieza      |
 
-##### Response:
+Response:
 
 ```Response
 {
@@ -136,7 +136,7 @@ La url base de la API, es:
 | :-------- | :------- | :------------------------------------------- |
 | `id`      | `string` | **Requiere**. Que la id pertenzca a un Juego |
 
-##### Response:
+Response:
 
 ```Response
 {
@@ -182,58 +182,55 @@ La url base de la API, es:
 | :-------- | :------- | :------------------------------------------------------------------------ |
 | `titulo`  | `string` | **Requiere**. Es el nombre del juego al cual se solicitan Recomendaciones |
 
-Response
-
-- #### Crear Catalogo
-
-```http
-  GET /catalogo/Catalogos/create/
-```
-
-- #### Se agregara un juego especifico al catalogo
-
-```http
-  GET /catalogo/Catalogos/usuario/add_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
-```
-
-- #### Se eliminara un juego del catalogo seleccionado
-
-```http
-  GET /catalogo/Catalogos/usuario/delete_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
-```
-
-- #### Se eliminara un usuario especifico
-
-```http
-  GET /catalogo/Catalogos/usuario/delete/(?P<id>\d+)/
-```
-
-- #### Muestra los catalogos del usuario
-
-```http
-  GET /catalogo/Catalogos/usuario/
-```
-
-- #### Muestra los catalogos de un usuario en especifico
-
-```http
-  GET /catalogo/Catalogos/usuario/(?P<id>\d+)/
-```
-
-- #### Limita la cantidad de juegos en una lista
-
-```http
-  GET /catalogo/Juegos/?limit={int}&offset={int}
-```
-
-
-- #### Crear Catalogo
+- Crear un Catalogo
 
 ```http
   POST /catalogo/Catalogos/create/
 ```
 
-- #### Se eliminara un juego especifico del catalogo
+- Se agregara un juego especifico al catalogo
+
+```http
+  POST /catalogo/Catalogos/usuario/add_juego/:id/
+```
+
+- Se eliminara un juego del catalogo seleccionado
+
+```http
+  GET /catalogo/Catalogos/usuario/delete_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
+```
+
+- Se eliminara un usuario especifico
+
+```http
+  GET /catalogo/Catalogos/usuario/delete/(?P<id>\d+)/
+```
+
+- Muestra los catalogos del usuario
+
+```http
+  GET /catalogo/Catalogos/usuario/
+```
+
+- Muestra los catalogos de un usuario en especifico
+
+```http
+  GET /catalogo/Catalogos/usuario/(?P<id>\d+)/
+```
+
+- Limita la cantidad de juegos en una lista
+
+```http
+  GET /catalogo/Juegos/?limit={int}&offset={int}
+```
+
+- Crear Catalogo
+
+```http
+  POST /catalogo/Catalogos/create/
+```
+
+- Se eliminara un juego especifico del catalogo
 
 ```http
   POST /catalogo/Catalogos/usuario/delete_juego/(?P<id>\d+)/(?P<juego_id>\d+)/
