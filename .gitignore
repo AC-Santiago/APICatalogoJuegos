@@ -20,6 +20,8 @@ venv.bak/
 # IDE
 .idea/
 .vscode/
+.idx/
+devserver.sh
 
 backloggd_games.csv
 exportaciondb.py
