@@ -10,14 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-from pathlib import Path
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-import dj_database_url
-
-from dotenv import load_dotenv
 import os
+from pathlib import Path
+
+import cloudinary
+import cloudinary.api
+import cloudinary.uploader
+import dj_database_url
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +37,6 @@ DEBUG = "RENDER" not in os.environ
 
 ALLOWED_HOSTS = [
     "localhost",
-    "apicatalogojuegos-production.up.railway.app",
     "127.0.0.1",
 ]
 
@@ -100,26 +99,14 @@ WSGI_APPLICATION = "CatalogoJuegos.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL")
-if DEBUG:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "GameVault_db",
-            "USER": "postgres",
-            "PASSWORD": "Utadeo*2024",
-            "HOST": "localhost",
-            "PORT": "5432",
-        }
-    }
-else:
-    if DATABASE_URL:
-        DATABASES = {
-            "default": dj_database_url.config(
-                default=DATABASE_URL,
-            )
-        }
+PASSWORD_DB = os.getenv("PASSWORD_DB")
 
+DATABASES = {
+    "default": dj_database_url.config(
+        default="postgres://postgres:" + PASSWORD_DB + ":5432/GameVault_db",
+        conn_max_age=600,
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
