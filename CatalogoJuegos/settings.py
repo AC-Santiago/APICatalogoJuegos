@@ -99,7 +99,7 @@ WSGI_APPLICATION = "CatalogoJuegos.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 load_dotenv()
-PASSWORD_DB = os.getenv("PASSWORD_DB")
+PASSWORD_DB: str = str(os.getenv("PASSWORD_DB"))
 
 DATABASES = {
     "default": dj_database_url.config(
