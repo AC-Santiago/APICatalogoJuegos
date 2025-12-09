@@ -33,17 +33,17 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "RENDER" not in os.environ
+DEBUG = "PROD" not in os.environ
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
 ]
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+EXTERNAL_HOSTNAME = os.environ.get("EXTERNAL_HOSTNAME")
 
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+if EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(EXTERNAL_HOSTNAME)
 
 # Application definition
 
@@ -99,11 +99,11 @@ WSGI_APPLICATION = "CatalogoJuegos.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 load_dotenv()
-PASSWORD_DB: str = str(os.getenv("PASSWORD_DB"))
+URI_CONECTION: str = str(os.getenv("DATABASE_URL"))
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgres://postgres:" + PASSWORD_DB + ":5432/GameVault_db",
+        default=URI_CONECTION,
         conn_max_age=600,
     )
 }
